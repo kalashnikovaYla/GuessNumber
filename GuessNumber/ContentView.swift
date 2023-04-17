@@ -17,19 +17,20 @@ struct ContentView: View {
     @State var isShowSecondAlert = false
     @State var result = "Вы проиграли 😢"
     
+    @FocusState var isFocused: Bool
+    
     var body: some View {
         
         ZStack {
-            Color.yellow.ignoresSafeArea()
+            LinearGradient(colors: [Color.white, Color.blue], startPoint: .top, endPoint: .bottom).ignoresSafeArea()
             
             VStack(spacing: 25) {
                 
-            
                 if isOpen {
                     
                     Text("""
                     \(name)!
-                    Предлагаю тебе отгадать число от 1 до 10
+                    Предлагаю тебе отгадать число от 1 до 100
                     """)
                         
                         .font(.title)
@@ -37,20 +38,22 @@ struct ContentView: View {
                         .foregroundColor(.purple)
                     
                     
-                    TextField("Введите число от 1 до 10", text: $numberInput)
+                    TextField("Введите число от 1 до 100", text: $numberInput)
                         .textFieldStyle(.roundedBorder)
-                       
+                        .tint(.blue)
                         .font(.system(size: 24))
                         .keyboardType(.decimalPad)
                         .padding(.horizontal, 12)
-                        
                         .foregroundColor(.blue)
                         .padding()
+                        .focused($isFocused)
                     
                     Button {
+                        isFocused = false
+                        
                         isShowSecondAlert = true
                         
-                        let number = Int.random(in: 1...10)
+                        let number = Int.random(in: 1...100)
                         if numberInput == String(number) {
                             result = "Поздравляю с победой 🥳"
                         }
@@ -61,23 +64,20 @@ struct ContentView: View {
                             .font(.headline)
                             .padding()
                             .padding(.horizontal)
-                            .tint(.yellow)
+                            .tint(.white)
                             .background(.purple)
                             .cornerRadius(34)
                     }.alert(Text(result), isPresented: $isShowSecondAlert) {
                         
                         Button {
-                            
                         } label: {
                             Text("Ok")
                         }
-
                     }
-
                     
                 } else {
                     Text("""
-                         Привет \(name)!
+                         Привет!
                          Давай познакомимся!
                          """)
                     .font(.title)
@@ -90,12 +90,13 @@ struct ContentView: View {
                     
                     Button {
                         isShowAlert = true
+                        
                     } label: {
                         Text("Ввести имя")
                             .font(.headline)
                             .padding()
                             .padding(.horizontal)
-                            .tint(.yellow)
+                            .tint(.white)
                             .background(.purple)
                             .cornerRadius(34)
                         
@@ -121,7 +122,6 @@ struct ContentView: View {
                 
             }
         }
-        
        
     }
 }
